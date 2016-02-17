@@ -17,12 +17,190 @@
 
     <section class="main-content">
       <h1>
-<a id="cruisehuanggithubio" class="anchor" href="#cruisehuanggithubio" aria-hidden="true"><span class="octicon octicon-link"></span></a>cruisehuang.github.io</h1>
+        <a id="cruisehuanggithubio" class="anchor" href="#cruisehuanggithubio" aria-hidden="true">
+          <span class="octicon octicon-link"></span>
+        </a>
+        cruisehuang.github.io
+      </h1>
+      <p>From enterprise to starting-up, from manager to cto</p>
+      <hr/>
+      <h2>Setting Up AWS</h2>
+      <pre>
+        1. create ec2, got private key;
+        2. putty settings and winScp;
+        3. Security groups: add tcp:8080 for tomcat
+      </pre>
+      <hr/>
+      <h2>Setting Up Samba File server</h2>
+      <pre>
+        1. yum install Samba server
+        2. update /etc/samba/smb.conf
+        3. create linux & samba users
+        4. create samber directory and update previleges
+        5. iptables with port 137,138,139,445
+        6. selinux: sudo chcon -R -t samba_share_t $DIR
+      </pre>
+      <hr/>
+      <h2>Setting Up Apache static web</h2>
+      <pre>
+        1. yum install httpd
+        2. copy index.html to /var/www/html/.
+        3. open port80 in iptables or aws se-group
+        4. start httpd
+      </pre>
+      <hr/>
+      <h2>Setting Up local Git</h2>
+      <pre>
+        1. Install git on server
+        2. on Server, create account "git" WITHOUT password
+          2.1  on server, create local git repo
+        3. On server, in git home, create .ssh(chmod 700) & .ssh/authorized_keys(chmod 600)
+        4. On server, edit /etc/ssh/sshd_config with: RSAAuthentication yes / PubkeyAuthentication yes / AuthorizedKeysFile      .ssh/authorized_keys
+        5. On server, restart sshd
 
-<p>From enterprise to starting-up, from manager to cto</p>
+        6. On develop box, create ssh key pair, copy public key to server
+
+        7  On server, cat pulicKey >> .ssh/authorized_keys
+
+        8. On develop box, in user/.ssh/, create config file with
+        Host nkGitServer
+            HostName neoklinik-srv1
+            User git
+            IdentityFile pathToPrivateKey
+            port 22
+        9. On develop box, try git clone nkGitServer:/path.git
+        10.Or on develop box, use tortoiseGit and add the private key
+
+        !!!Almost certainly selinux. Run `restorecon -r /home` after mounting a new filesystem there.
+        (optional ) Gitolite(perl) or Gitosis(python) could be used
+      </pre>
+      <hr/>
+      <h2>Setting Up Maven</h2>
+      <pre>
+        1. Create Maven WAR project via Eclipse
+        2. Project Properties: Facets, then Deployment Assembly
+        3. Add dependencies in pom.xml, ref http://mvnrepository.com/
+        4. if customized settings needed, edit pom.xml directly to overwrite
+        5. The deployment target directory is <b>NOT</b>> webapp/WEB-INF
+        6. Added spring files, web.xml, applicationContext.xml, servletConfig.xml and java classes
+        7. Unit test: ref http://www.ibm.com/developerworks/cn/java/j-lo-springunitest/index.html
+      </pre>
+      <hr/>
+      <h2>Setting Up Shadowsocks for proxy</h2>
+      <pre>
+        1. yum install python-setuptools && easy_install pip
+        2. pip install shadowsocks
+        3. ssserver -p port -k password -m encryption
+      </pre>
+      <hr/>
+      <h2>Encoding</h2>
+      <pre>
+        1. The encoding in WIN & database is UTF8, which is by default GBK
+        2. To check the encoding in java is:
+           new String(obj.getBytes("ISO-8859-1"), "UTF8")
+        3. ALERT!! The default encoding for mysql in centos6.7 is latin1 (ISO-8859-1)
+           which caused the encoding problem in linux web server, need to be changed to UTF-8
+        4. How to:
+           update /etc/my.cnf as
+
+           [mysqld]
+           default-character-set=utf8
+           init_connect='SET NAMES utf8'
+
+           [client]
+           default-character-set=utf8
+
+           [mysql]
+           default-character-set=utf8
+
+           Then create database XXX character set utf8
+           SHOW VARIABLES LIKE ‘character%’;
+           +--------------------------+----------------------------+
+           | Variable_name | Value |
+           +--------------------------+----------------------------+
+           | character_set_client | utf8 |
+           | character_set_connection | utf8 |
+           | character_set_database | utf8 |
+           | character_set_filesystem | binary |
+           | character_set_results | utf8 |
+           | character_set_server | utf8 |
+           | character_set_system | utf8 |
+           | character_sets_dir | /usr/share/mysql/charsets/ |
+           +--------------------------+----------------------------+
+
+        5. Do not forget
+           response.setCharacterEncoding("UTF-8");
+      </pre>
+      <hr/>
+      <h2>Submit APP to AppStore</h2>
+      <pre>
+        1. create CSR file for device
+        2. create certificate in dev.apple by the CSR file
+        3. download and import the certificate file
+        4. add account in xcode
+        5. set account->company in project
+        6. archive
+      </pre>
+      <hr/>
+      <h2>Jenkins CI Part I</h2>
+      <pre>
+        1. Download jenkins.war
+        2. set JENKINS_HOME = path
+        3. run "java -jar jenkins.war" or put war in tomcat
+        4. download jenkins git plugin, and upload it in plugin management. NOTE: only version1.0 could be installed in centos6
+        5. set jdk, git and maven ENV. And email
+        6. Create new maven project, specify git repository
+        7. Build project should be ok.
+        8. Configure Global Security.
+        9. Nightly build: Project Config => Build periodically: H 22 * * *
+
+      DELETE old builds:
+        Config the project with delete old build, OR
+        FROM bash: curl -u user:pwd -X POST http://neoklinik-srv1:8080/jenkins/job/JOB_NAME/[1(from)-99(to)]/doDelete
+      </pre>
+      <h2>Jenkins CI PartII</h2>
+      <pre>
+        Add Mac node and ObjectiveC unit test in Jenkins
+
+        1. Download Jenkins Mac package, install.. (JDK1.7 or later needed)
+          1.1 /Library/Application Support/Jenkins/jenkins-runner.sh
+          1.2 /Library/LaunchDeamons/org.jenkins-co.plist
+
+        2. Two new plugins for Master Node, xcode & kpp-management(keychain)
+
+        3. From master, create new dumb slave
+          3.1 Remote root directory is the jenkins DIR in mac
+          3.2 Lauch via SSH with user jenkins/pwd
+          3.3 !!Provisioning Profiles DIR
+
+        4. From Mac, prepare devel & distr provisioning file for jenkins user
+
+        5. Create new project in Master
+          5.1 Label Expression: Mac
+          5.2 upload provisioning file in key-chain management and select here
+          5.3 upload login.key chain and check "Unlock Keychain"
+          5.4 Specify target,workspace and scheme if needed (create new test scheme if needed)
+          5.5 the 2dn build step:
+              "xcodebuild -workspace Neoklinik.xcworkspace -scheme NeoklinikTests -configuration Debug -sdkiphonesimulator9.2 test"
+
+        NOTE:
+          make sure that the unit test only depends on SDK:iphonesimulator
+          scheme is generated after the workspace is opened by xcode
+      </pre>
+      <hr/>
+      <h2>Add RAID1 to existing CentOS</h2>
+      <pre>
+        <a herf="https://linux.cn/article-6093-1.html">Follow the instructions in Chinese</a>
+        Then change the /home mount point to /dev/md0, the RAID device
+        Do Not forget update selinux for the new /home
+      </pre>
+      <h2>Database Design: Manage the recurrence events in Calender</h2>
+      <pre>
+        TODO
+      </pre>
+
 
       <footer class="site-footer">
-
         <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
       </footer>
 
