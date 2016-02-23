@@ -190,13 +190,26 @@
       <hr/>
       <h2>Add RAID1 to existing CentOS</h2>
       <pre>
-        <a herf="https://linux.cn/article-6093-1.html">Follow the instructions in Chinese</a>
+        <a href="https://linux.cn/article-6093-1.html">Follow the instructions in Chinese</a>
         Then change the /home mount point to /dev/md0, the RAID device
         Do Not forget update selinux for the new /home
       </pre>
       <h2>Database Design: Manage the recurrence events in Calender</h2>
       <pre>
-        TODO
+        Solution 1: Save the  recurrence plan and all the occurrence instances
+          cons: Huge number of records storing in DB;
+                Difficult to handle the endless plan;
+                Difficult to manipulate the plan
+
+        Solution 2: Just save the plan (weekdays, day_of_month, repeating conditions ...)
+                    and generate the occurrence in the fly.
+          cons: Difficult to manipulate single occurrence
+
+        Solution 3: Save the plan and the exceptions
+
+        Final solution, for repeatable plan and user events:
+          user_calender: (user_id, date) UNIQUE
+          date_event: calendar_id,time,priority,plan_id,event_id
       </pre>
 
 
