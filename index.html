@@ -219,6 +219,29 @@
         My Repository <a href="https://github.com/cruisehuang/angular_calendar">Angular Calendar Demo</a>
       </pre>
 
+      <hr/>
+      <h2>Setting up a DCM server: Orthanc </h2>
+      <pre>
+        <a href="http://orthanc-server.com/">Download source package from orthanc-server.com </a>
+        1. Follow instructions in LinuxCompilation.txt;
+        2. Minimun libs required: cmake, libuuid;
+        3. cd OthrancBuild folder; cmake; make;
+        4. ./Orthanc --config=Configuration.json;
+        5. ./Orthanc Configuration.json;
+        6. Set the iptable to allow port 8042(default port)
+      </pre>
+  
+      <hr/>
+      <h2>Setting up a DCM server: dcm2chee </h2>
+      <pre>
+        Package preparation:
+          1. jdk / mysql
+          2. dcm2chee-2.xx-mysql.zip
+          3. jboss-4.2.3.GA-jdk6.zip
+          4. clib_jiio / clibwrapper_jiio / jai_imageio /  
+        <a href="https://dcm4che.atlassian.net/wiki/display/ee2/Installation">Follow the general instructions</a>
+      </pre>
+
 
 
       <footer class="site-footer">
