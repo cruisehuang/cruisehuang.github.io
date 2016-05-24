@@ -234,12 +234,21 @@
       <hr/>
       <h2>Setting up a DCM server: dcm2chee </h2>
       <pre>
+        <a href="https://dcm4che.atlassian.net/wiki/display/ee2/Installation">Follow the general instructions</a>
+        <a href="http://www.dcm4che.org/docs/reference/dcm4chee/html/dcm4chee-installation.html">And this one</a>
+
         Package preparation:
           1. jdk / mysql
           2. dcm2chee-2.xx-mysql.zip
           3. jboss-4.2.3.GA-jdk6.zip
-          4. clib_jiio / clibwrapper_jiio / jai_imageio /  
-        <a href="https://dcm4che.atlassian.net/wiki/display/ee2/Installation">Follow the general instructions</a>
+          4. clib_jiio / clibwrapper_jiio / jai_imageio /
+        NOTE:
+          1. Download dcm2chee-2.18.1-mysql than 2.18.3, since there is missing file (install_jboss)
+          2. extract clib_jiio / clibwrapper_jiio / jai_imageio to specific folders as the instructions
+          3. extract jboss-4.2.3.GA; Then '../bin/install_jboss.sh $PATH_TO_JBOSS'
+          4. Setup pacsdb as instructions
+          5. added hostname into /ect/hosts
+          6. sudo ./bin/run.sh
       </pre>
 
 
