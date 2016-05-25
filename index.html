@@ -229,6 +229,7 @@
         4. ./Orthanc --config=Configuration.json;
         5. ./Orthanc Configuration.json;
         6. Set the iptable to allow port 8042(default port)
+           'sudo iptables -I INPUT -p tcp -m tcp --dport 8042 -j ACCEPT'
       </pre>
   
       <hr/>
@@ -248,7 +249,8 @@
           3. extract jboss-4.2.3.GA; Then '../bin/install_jboss.sh $PATH_TO_JBOSS'
           4. Setup pacsdb as instructions
           5. added hostname into /ect/hosts
-          6. sudo ./bin/run.sh
+          6. change jboss port if needed, in ../server/default/deploy/jboss-web.deployer/server.xml
+          7. sudo ./bin/run.sh
       </pre>
 
 
