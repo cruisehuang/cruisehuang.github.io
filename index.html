@@ -252,6 +252,25 @@
           6. change jboss port if needed, in ../server/default/deploy/jboss-web.deployer/server.xml
           7. sudo ./bin/run.sh
       </pre>
+      
+      <hr/>
+      <h2>Setting up nginx </h2>
+      <pre>
+        Installation:
+          option#1: create yum repo /etc/yum.repos.d/nginx.repo, and yum install;
+              [nginx]
+              name=nginx repo
+              baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+              gpgcheck=0
+              enabled=1
+          option#2: Download rpm from <a href='http://nginx.org/packages/centos/6/x86_64/RPMS/'>here</a> , since EPEL not allowed in AWS;
+          option#3: Download source code, configure, make and install.
+          
+        Configuration:
+          Refer <a href='https://www.nginx.com/resources/wiki/start/topics/examples/full/'>Here</a>
+        
+        Note: if got "Permission denied" error, set SElinux to Permissive  by "# setenforce Permissive"         
+      </pre>
 
 
 
