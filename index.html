@@ -272,6 +272,52 @@
         Note: if got "Permission denied" error, set SElinux to Permissive  by "# setenforce Permissive"         
       </pre>
 
+      <hr/>
+      <h2>Setting up mysql remote connection </h2>
+      <pre>
+        1. open default port 3306 in iptables;
+        2. /etc/my.cnf:
+            [mysqld]
+            bind-address = 0.0.0.0
+            #skip-networking
+        3. Grant mysql user privileges
+            mysql> GRANT ALL ON DB_NAME.* TO USER@'IP' IDENTIFIED BY 'UR_PWD';
+            mysql> FLUSH PRIVILEGES;       
+      </pre>
+      
+      <hr/>
+      <h2>Installation of Redmine, a free bug management tool</h2>
+      <pre>
+        1. Download redmine-3.3.0 from www.redmine.org, and ref the installation guide;
+        2. Dependencies: Ruby-2.3 Rails-4.2
+        3. Mysql already installed, create database and user for redmine
+        4. edit PATH_2_redmine/config/database.yml
+              production:
+                adapter: mysql2 #NOTE: must be mysql2, or an incompatale error of UTF-8 will happen 
+                database: redmine
+                host: localhost
+                username: redmine
+                password: my_password
+        5. Edit PATH_2_redmine/Gemfile for gems needed.
+        6. Install bunder for gems
+                $ gem install bundler
+                $ bundle install --without development test
+                bundle install --without development test rmagick
+        7. More configurations
+                  #Session store secret generation
+                $ bundle exec rake generate_secret_token
+
+                  #Database schema objects creation
+                $ RAILS_ENV=production bundle exec rake db:migrate
+
+                  #Database default data set
+                $ RAILS_ENV=production bundle exec rake redmine:load_default_data
+        8. Permissions of redmine folder: owner & mod755
+        9. Run up the server
+                  #default 127.0.0.1:3000, only localhost can access, change via -v 0.0.0.0
+                $ bundle exec rails server -b 0.0.0.0 webrick -e production
+      </pre>
+
 
 
       <footer class="site-footer">
