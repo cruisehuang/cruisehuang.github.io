@@ -38,8 +38,9 @@
         2. update /etc/samba/smb.conf
         3. create linux & samba users
         4. create samber directory and update previleges
-        5. iptables with port 137,138,139,445
-        6. selinux: sudo chcon -R -t samba_share_t $DIR
+		5. smbpasswd to add user and pwd
+        6. iptables with port 137,138,139,445
+        7. selinux: sudo chcon -R -t samba_share_t $DIR
       </pre>
       <hr/>
       <h2>Setting Up Apache static web</h2>
